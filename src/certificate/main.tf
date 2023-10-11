@@ -26,7 +26,7 @@ resource "null_resource" "dependency_acme_account_id" {
 resource "tls_cert_request" "certificate" {
   depends_on = [null_resource.dependency_acme_account_id]
 
-  key_algorithm   = "RSA"
+#  key_algorithm   = "RSA"
   private_key_pem = tls_private_key.certificate.private_key_pem
 
   dns_names = var.dns_names
