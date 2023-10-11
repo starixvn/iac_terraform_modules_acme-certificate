@@ -34,3 +34,7 @@ output "private_key_pem" {
   description = "The certificate's private key, in PEM format."
   value       = tls_private_key.certificate.private_key_pem
 }
+
+output "acm_certificate_arn" {
+  value = aws_acm_certificate.certificate.arn
+}
