@@ -20,18 +20,12 @@ variable "acme_account_private_key" {
   description = "The ACME account private key used to request the certificate."
 }
 
-variable "dns_challenge" {
-  description = "The [DNS challenge|https://www.terraform.io/docs/providers/acme/r/certificate.html#using-dns-challenges] to use in fulfilling the request."
-
-  type = object({
-    config   = map(string)
-    provider = string
-  })
+variable "base_domain" {
+  type        = string
 }
 
-variable "dns_names" {
-  description = "A list of DNS domain names to register the certificate for. The fist one is the cetificate's common name, the primary domain that the certificate will be recognized for."
-  type        = list(string)
+variable "base_domain_zone_id" {
+  type        = string
 }
 
 variable "min_days_remaining" {
@@ -39,7 +33,3 @@ variable "min_days_remaining" {
   default     = 30
 }
 
-variable "recursive_nameservers" {
-  description = "The recursive nameservers that will be used to check for propagation of the challenge record. Defaults to your system-configured DNS resolvers."
-  default     = []
-}

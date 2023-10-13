@@ -13,19 +13,15 @@
 # limitations under the License.
 
 terraform {
+  required_version = ">= 1.4" # which means any version equal & above 0.14 like 0.15, 0.16 etc and < 1.xx
   required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
     acme = {
       source  = "vancluever/acme"
-      version = ">= 1.5.0"
-    }
-    null = {
-      source  = "hashicorp/null"
-      version = ">= 2.1.2"
-    }
-    tls = {
-      source  = "hashicorp/tls"
-      version = ">= 2.2.0"
+      version = "2.18.0"
     }
   }
-  required_version = ">= 0.12.26"
 }

@@ -32,5 +32,5 @@ output "issuer_pem" {
 
 output "private_key_pem" {
   description = "The certificate's private key, in PEM format."
-  value       = tls_private_key.certificate.private_key_pem
+  value       = acme_certificate.certificate.private_key_pem
 }

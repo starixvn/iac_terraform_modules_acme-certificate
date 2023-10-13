@@ -12,45 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "tls_private_key" "certificate" {
-  algorithm = "RSA"
-}
-
-# This is required as the resource acme_certificate does use the argument registration_url anymore
-resource "null_resource" "dependency_acme_account_id" {
-  triggers = {
-    acme_account_id = var.acme_account_id
-  }
-}
-
-resource "tls_cert_request" "certificate" {
-  depends_on = [null_resource.dependency_acme_account_id]
-
-#  key_algorithm   = "RSA"
-  private_key_pem = tls_private_key.certificate.private_key_pem
-
-  dns_names = var.dns_names
-
-  subject {
-    common_name = var.dns_names[0]
-  }
-}
-
 resource "acme_certificate" "certificate" {
-  account_key_pem         = var.acme_account_private_key
-  certificate_request_pem = tls_cert_request.certificate.cert_request_pem
-  min_days_remaining      = var.min_days_remaining
-  recursive_nameservers   = var.recursive_nameservers != [] ? var.recursive_nameservers : null
+  account_key_pem           = var.acme_account_private_key
+  common_name               = var.base_domain
+  subject_alternative_names = ["*.${var.base_domain}"]
 
-  dynamic "dns_challenge" {
-    for_each = [var.dns_challenge]
-    content {
-      config   = dns_challenge.value.config
-      provider = dns_challenge.value.provider
+  dns_challenge {
+    provider = "route53"
+    config = {
+      AWS_HOSTED_ZONE_ID = var.base_domain_zone_id
     }
   }
-
+/*
   lifecycle {
     create_before_destroy = true
   }
+*/
 }
